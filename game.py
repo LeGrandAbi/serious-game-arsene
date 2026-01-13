@@ -2,7 +2,7 @@ import pygame as pg
 import random as rand
 
 from settings import *
-from screen import Screen
+from screen import *
 from robot import Robot
 from tilemap import TileMap
 
@@ -41,11 +41,14 @@ class Game(Screen):
 				if robot.controlled: self.switch_robot_control()
 				self.robots.remove(robot)
 
-
 	def switch_robot_control(self):
 		self.controlled_robot.controlled = False
 		self.controlled_robot = self.robots[rand.randint(0, len(self.robots)-1)]
 		self.controlled_robot.controlled = True
+
+
+	def exit_condition(self):
+		return self.inputs.keys["secondary"].keydown
 
 
 if __name__ == "__main__":
