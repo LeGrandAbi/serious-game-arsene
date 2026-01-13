@@ -42,8 +42,11 @@ class Game(Screen):
 				self.robots.remove(robot)
 
 	def switch_robot_control(self):
+		new_controlled_robot = self.robots[rand.randint(0, len(self.robots)-1)]
+		while new_controlled_robot == self.controlled_robot:
+			new_controlled_robot = self.robots[rand.randint(0, len(self.robots)-1)]
 		self.controlled_robot.controlled = False
-		self.controlled_robot = self.robots[rand.randint(0, len(self.robots)-1)]
+		self.controlled_robot = new_controlled_robot
 		self.controlled_robot.controlled = True
 
 
