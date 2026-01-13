@@ -36,6 +36,7 @@ class Robot:
         if self.life != ROBOT_MAX_LIFE:
             neige_texture = self.data.texture_screen_neige[random.randint(0, len(self.data.texture_screen_neige)-1)].copy()
             neige_texture.set_alpha(int(255-255*self.life/ROBOT_MAX_LIFE))
+            neige_texture = pg.transform.flip(neige_texture, random.randint(0,1), random.randint(0,1))
             screen_texture.blit(neige_texture, (0,0))
         texture.blit(screen_texture, (13,3))
 

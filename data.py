@@ -15,7 +15,7 @@ class Data:
 		self.texture_robot_screen_nosignal = pg.image.load("./data/textures/robot_screen_nosignal.png").convert()
 		self.texture_robot_screen_signal = pg.image.load("./data/textures/robot_screen_signal.png").convert()
 		self.texture_robot_screen_next = pg.image.load("./data/textures/robot_screen_next.png").convert()
-		self.texture_screen_neige = [pg.image.load(f"./data/textures/screen_neige_{i+1}.png").convert_alpha() for i in range(1)]
+		self.texture_screen_neige = [pg.image.load(f"./data/textures/screen_neige_{i+1}.png").convert_alpha() for i in range(3)]
 
 		self.easy_levels = []
 		self.normal_levels = []
