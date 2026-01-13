@@ -24,6 +24,7 @@ class Game(Screen):
 			for y in range(self.tilemap.height):
 				texture = self.tilemap.get_image(x, y)
 				self.display.blit(texture, (x*TILE_SIZE, y*TILE_SIZE))
+
 		for robot in sorted(self.robots, key = lambda robot: robot.position.y):
 			texture = robot.get_image()
 			self.display.blit(texture, texture.get_rect(center=robot.position))

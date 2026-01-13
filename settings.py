@@ -1,4 +1,6 @@
 MAX_FPS = 60
+SHOW_FPS = True
+
 WIDTH = 768
 HEIGHT = 768
 

@@ -3,6 +3,8 @@ import pygame as pg
 
 class Data:
 	def __init__(self):
+		self.font = pg.font.Font()
+
 		self.texture_tile = pg.image.load("./data/textures/tile.png").convert()
 		self.texture_tile_danger = pg.image.load("./data/textures/tile_danger.png").convert()
 		self.texture_tile_warning = pg.image.load("./data/textures/tile_warning.png").convert_alpha()

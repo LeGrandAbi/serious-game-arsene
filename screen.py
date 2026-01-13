@@ -15,13 +15,20 @@ class Screen:
 		while not (self.inputs.quit or self.exit_condition()):
 			self.inputs.update()
 			self.update()
-			self.display.fill((0,0,0))
-			self.draw_display()
-			pg.display.flip()
+			self.update_display()
 			self.clock.tick(MAX_FPS)
 		if self.inputs.quit:
 			pg.quit()
 			exit()
+
+
+	def update_display(self):
+		self.display.fill((0,0,0))
+		self.draw_display()
+		if SHOW_FPS:
+			texture = self.data.font.render(str(int(self.clock.get_fps())), True, "white")
+			self.display.blit(texture, (0,0))
+		pg.display.flip()
 
 	def draw_display(self):
 		self.display.fill((0, 0, 0))
