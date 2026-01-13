@@ -16,6 +16,11 @@ TILEMAP_WIDTH = 6
 TILEMAP_HEIGHT = 6
 TILE_SIZE = 128
 
+# in seconds
+LEVEL_PERIOD_MAX = 40
+LEVEL_PERIOD_MIN = 1
+LEVEL_PERIOD_MALUS = 1
+
 
 if __name__ == "__main__":
     import main
