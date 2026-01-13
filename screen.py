@@ -10,13 +10,14 @@ class Screen:
 		self.inputs = inputs
 		self.data = data
 
-
 	def run(self):
 		self.inputs.update()
 		while not (self.inputs.quit or self.exit_condition()):
 			self.inputs.update()
 			self.update()
+			self.display.fill((0,0,0))
 			self.draw_display()
+			pg.display.flip()
 			self.clock.tick(MAX_FPS)
 		if self.inputs.quit:
 			pg.quit()
@@ -39,21 +40,18 @@ class GameOverScreen(Screen):
 		self.next = False
 
 	def draw_display(self):
-		self.display.fill((255, 0, 0))
-		pg.display.flip()
-
+		pg.draw.circle(self.display, (255, 0, 0), (400,400), 64)
 
 	def exit_condition(self):
 		return self.inputs.keys["primary"].keydown
+
 
 class StartingScreen(Screen):
 	def __init__(self, display, clock, inputs, data):
 		super().__init__(display, clock, inputs, data)
 
 	def draw_display(self):
-		self.display.fill((0, 255, 0))
-		pg.display.flip()
-
+		pg.draw.circle(self.display, (0, 255, 0), (400,400), 128)
 
 	def exit_condition(self):
 		return self.inputs.keys["primary"].keydown

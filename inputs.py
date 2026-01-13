@@ -4,8 +4,6 @@ class Inputs:
 	def __init__(self):
 		self.quit = False
 		self.keys = {}
-
-		# self.keys[ACTION] = KeyInput(KeyA, KeyB, keyC, ...)
 		self.keys["left"] = KeyInput(pg.K_LEFT, pg.K_a, pg.K_q)
 		self.keys["right"] = KeyInput(pg.K_RIGHT, pg.K_d)
 		self.keys["up"] = KeyInput(pg.K_UP, pg.K_z, pg.K_w)
@@ -14,7 +12,6 @@ class Inputs:
 		self.keys["secondary"] = KeyInput(pg.K_LCTRL)
 
 	def update(self):
-		# updates the value of each input according to their assignated keys
 		for key_input in self.keys.values():
 			key_input.keydown = False
 			key_input.keyup = False
@@ -35,10 +32,10 @@ class Inputs:
 
 class KeyInput:
 	def __init__(self, *keys):
-		self.keys = keys		# array of pg.keyCodes, all the keys that perform the same actions (ex: left arrow, a, q, ...)
-		self.keydown = False	# status of the action: the button was just pressed at this tick
-		self.pressed = False	# status: the button is being pressed
-		self.keyup = False		# status of the action: the button was just released at this tick
+		self.keys = keys
+		self.keydown = False
+		self.pressed = False
+		self.keyup = False
 
 
 if __name__ == "__main__":

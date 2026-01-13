@@ -15,5 +15,6 @@ TILEMAP_WIDTH = 6
 TILEMAP_HEIGHT = 6
 TILE_SIZE = 128
 
+
 if __name__ == "__main__":
     import main

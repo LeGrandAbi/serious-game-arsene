@@ -4,15 +4,14 @@ import math
 
 from settings import *
 
+
 class Robot:
     def __init__(self, data):
         self.data = data
-
         self.position = pg.math.Vector2(random.uniform(350, 450), random.uniform(350, 450))
         angle = random.uniform(0, 2 * math.pi)
         self.velocity = pg.math.Vector2(math.cos(angle), math.sin(angle)) * ROBOT_MAX_SPEED / 2
         self.acceleration = pg.math.Vector2()
-
         self.controlled = False
 
     def get_image(self):
@@ -26,12 +25,10 @@ class Robot:
             self.control(inputs)
         else:
             self.behave(robots)
-
         self.velocity += self.acceleration
         if self.velocity.length() > ROBOT_MAX_SPEED: self.velocity.scale_to_length(ROBOT_MAX_SPEED)
         self.position += self.velocity
         self.acceleration *= 0
-
         self.restrict()
 
     def restrict(self):
@@ -120,6 +117,7 @@ class Robot:
             return steer
         else:
             return pg.math.Vector2()
+
 
 if __name__ == "__main__":
     import main
