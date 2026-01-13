@@ -1,0 +1,122 @@
+import pygame as pg
+import random
+import math
+
+from settings import *
+
+class Robot:
+    def __init__(self, data):
+        self.data = data
+
+        self.position = pg.math.Vector2(random.uniform(350, 450), random.uniform(350, 450))
+        angle = random.uniform(0, 2 * math.pi)
+        self.velocity = pg.math.Vector2(math.cos(angle), math.sin(angle)) * ROBOT_MAX_SPEED / 2
+        self.acceleration = pg.math.Vector2()
+
+        self.controlled = False
+
+    def get_image(self):
+        texture = self.data.texture_robot
+        if self.velocity.x < 0:
+            texture =  pg.transform.flip(texture, True, False)
+        return texture
+
+    def update(self, inputs, robots):
+        if self.controlled:
+            self.control(inputs)
+        else:
+            self.behave(robots)
+        self.restrict()
+
+    def restrict(self):
+        if self.position.x < 0: 
+            self.position.x = 0
+            self.velocity.x *= -ROBOT_BOUNCE
+        if self.position.x > TILEMAP_WIDTH * TILE_SIZE: 
+            self.position.x = TILEMAP_WIDTH * TILE_SIZE
+            self.velocity.x *= -ROBOT_BOUNCE
+        if self.position.y < 0: 
+            self.position.y = 0
+            self.velocity.y *= -ROBOT_BOUNCE
+        if self.position.y > TILEMAP_HEIGHT * TILE_SIZE: 
+            self.position.y = TILEMAP_HEIGHT * TILE_SIZE
+            self.velocity.y *= -ROBOT_BOUNCE
+
+    def control(self, inputs):
+        if inputs.keys["left"].pressed: self.rect.x -= CONTROL_SPEED
+        if inputs.keys["right"].pressed: self.rect.x += CONTROL_SPEED
+        if inputs.keys["up"].pressed: self.rect.y -= CONTROL_SPEED
+        if inputs.keys["down"].pressed: self.rect.y += CONTROL_SPEED
+
+    def behave(self, robots):
+        separation = self.separate(robots)
+        alignment = self.align(robots)
+        cohesion = self.cohere(robots)
+
+        self.acceleration += separation
+        self.acceleration += alignment
+        self.acceleration += cohesion
+
+        self.velocity += self.acceleration
+        if self.velocity.length() > ROBOT_MAX_SPEED: self.velocity.scale_to_length(ROBOT_MAX_SPEED)
+        self.position += self.velocity
+        self.acceleration *= 0
+
+    def separate(self, robots):
+        steer = pg.math.Vector2()
+        count = 0
+        for other in robots:
+            distance = self.position.distance_to(other.position)
+            if 0 < distance < ROBOT_SEPARATION_DIST:
+                diff = self.position - other.position
+                diff /= distance
+                steer += diff
+                count += 1
+        if count > 0:
+            steer /= count
+        if steer.length() > 0.0001:
+            steer.scale_to_length(ROBOT_MAX_SPEED)
+            steer -= self.velocity
+            if steer.length() > ROBOT_MAX_FORCE:
+                steer.scale_to_length(ROBOT_MAX_FORCE)    
+        return steer
+
+    def align(self, robots):
+        avg_velocity = pg.math.Vector2()
+        count = 0
+        for other in robots:
+            distance = self.position.distance_to(other.position)
+            if 0 < distance < ROBOT_NEIGHBOR_DIST:
+                avg_velocity += other.velocity
+                count += 1
+        if count > 0:
+            avg_velocity /= count
+            avg_velocity.scale_to_length(ROBOT_MAX_SPEED)
+            steer = avg_velocity - self.velocity
+            if steer.length() > ROBOT_MAX_FORCE:
+                steer.scale_to_length(ROBOT_MAX_FORCE)
+            return steer
+        else:
+            return pg.math.Vector2()
+
+    def cohere(self, robots):
+        center_mass = pg.math.Vector2()
+        count = 0
+        for other in robots:
+            distance = self.position.distance_to(other.position)
+            if 0 < distance < ROBOT_NEIGHBOR_DIST:
+                center_mass += other.position
+                count += 1
+        if count > 0:
+            center_mass /= count
+            desired = center_mass - self.position
+            desired.scale_to_length(ROBOT_MAX_SPEED)
+            steer = desired - self.velocity
+            if steer.length() > ROBOT_MAX_FORCE:
+                steer.scale_to_length(ROBOT_MAX_FORCE)
+            return steer
+        else:
+            return pg.math.Vector2()
+
+if __name__ == "__main__":
+    import main
