@@ -15,15 +15,17 @@ class Game:
 		self.tilemap = TileMap(TILEMAP_WIDTH, TILEMAP_HEIGHT, self.data)
 
 		self.robots = [Robot(self.data) for _ in range(NB_ROBOTS)]
+		self.controlled_robot = self.robots[0]
+		self.switch_robot_control()
 
 	def run(self):
 		while not self.inputs.quit:
 			self.inputs.update()
-			self.update_sprites()
-			self.update_display()
+			self.update()
+			self.draw_display()
 			self.clock.tick(MAX_FPS)
 
-	def update_display(self):
+	def draw_display(self):
 		self.display.fill((0,0,0))
 
 		# draws the tiles
@@ -39,11 +41,20 @@ class Game:
 
 		pg.display.flip()
 
-	def update_sprites(self):
+	def update(self):
+		if self.inputs.keys["primary"].keydown:
+			self.switch_robot_control()
 		for robot in self.robots:
 			robot.update(self.inputs, self.robots)
 			if self.tilemap.collide_with_danger(robot):
+				if robot.controlled: self.switch_robot_control()
 				self.robots.remove(robot)
+
+
+	def switch_robot_control(self):
+		self.controlled_robot.controlled = False
+		self.controlled_robot = self.robots[rand.randint(0, len(self.robots)-1)]
+		self.controlled_robot.controlled = True
 
 
 if __name__ == "__main__":
