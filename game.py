@@ -2,28 +2,19 @@ import pygame as pg
 import random as rand
 
 from settings import *
+from screen import Screen
 from robot import Robot
 from tilemap import TileMap
 
-class Game:
+class Game(Screen):
 	def __init__(self, display, clock, inputs, data):
-		self.display = display
-		self.clock = clock
-		self.inputs = inputs
-		self.data = data
+		super().__init__(display, clock, inputs, data)
 
 		self.tilemap = TileMap(TILEMAP_WIDTH, TILEMAP_HEIGHT, self.data)
 
 		self.robots = [Robot(self.data) for _ in range(NB_ROBOTS)]
 		self.controlled_robot = self.robots[0]
 		self.switch_robot_control()
-
-	def run(self):
-		while not self.inputs.quit:
-			self.inputs.update()
-			self.update()
-			self.draw_display()
-			self.clock.tick(MAX_FPS)
 
 	def draw_display(self):
 		self.display.fill((0,0,0))
