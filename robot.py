@@ -39,11 +39,11 @@ class Robot:
             texture =  pg.transform.flip(texture, True, False)
         return texture
 
-    def update(self, inputs, robots):
+    def update(self, inputs, robots, controlled_robot):
         if self.controlled:
             self.control(inputs)
         else:
-            self.behave(robots)
+            self.behave(inputs, robots, controlled_robot)
         self.velocity += self.acceleration
         if self.velocity.length() > ROBOT_MAX_SPEED: self.velocity.scale_to_length(ROBOT_MAX_SPEED)
         self.position += self.velocity
@@ -71,14 +71,16 @@ class Robot:
         if inputs.keys["down"].pressed: self.velocity.y = CONTROL_SPEED
         self.velocity *= 0.8
 
-    def behave(self, robots):
+    def behave(self, inputs, robots, controlled_robot):
         separation = self.separate(robots)
         alignment = self.align(robots)
         cohesion = self.cohere(robots)
+        follow = self.follow(inputs, controlled_robot)
 
         self.acceleration += separation
         self.acceleration += alignment
         self.acceleration += cohesion
+        self.acceleration += follow
 
     def separate(self, robots):
         steer = pg.math.Vector2()
@@ -137,6 +139,14 @@ class Robot:
         else:
             return pg.math.Vector2()
 
+    def follow(self, inputs, controlled_robot):
+        follow = pg.Vector2()
+        if inputs.keys["secondary"].pressed:
+            pass
+
+            # follow behavior
+            
+        return follow
 
 if __name__ == "__main__":
     import main

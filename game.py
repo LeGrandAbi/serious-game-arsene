@@ -30,7 +30,7 @@ class Game(Screen):
 		if self.inputs.keys["primary"].keydown:
 			self.switch_robot_control()
 		for robot in self.robots:
-			robot.update(self.inputs, self.robots)
+			robot.update(self.inputs, self.robots, self.controlled_robot)
 			if self.tilemap.collide_with_danger(robot):
 				if robot.controlled:
 					self.switch_robot_control()

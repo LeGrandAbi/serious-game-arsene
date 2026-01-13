@@ -19,7 +19,6 @@ class Data:
 		self.easy_levels = []
 		self.normal_levels = []
 		self.hard_levels = []
-
 		self.generate_levels()
 
 	def generate_levels(self):
