@@ -26,6 +26,12 @@ class Robot:
             self.control(inputs)
         else:
             self.behave(robots)
+
+        self.velocity += self.acceleration
+        if self.velocity.length() > ROBOT_MAX_SPEED: self.velocity.scale_to_length(ROBOT_MAX_SPEED)
+        self.position += self.velocity
+        self.acceleration *= 0
+
         self.restrict()
 
     def restrict(self):
@@ -43,10 +49,11 @@ class Robot:
             self.velocity.y *= -ROBOT_BOUNCE
 
     def control(self, inputs):
-        if inputs.keys["left"].pressed: self.rect.x -= CONTROL_SPEED
-        if inputs.keys["right"].pressed: self.rect.x += CONTROL_SPEED
-        if inputs.keys["up"].pressed: self.rect.y -= CONTROL_SPEED
-        if inputs.keys["down"].pressed: self.rect.y += CONTROL_SPEED
+        if inputs.keys["left"].pressed: self.velocity.x = -CONTROL_SPEED
+        if inputs.keys["right"].pressed: self.velocity.x = CONTROL_SPEED
+        if inputs.keys["up"].pressed: self.velocity.y = -CONTROL_SPEED
+        if inputs.keys["down"].pressed: self.velocity.y = CONTROL_SPEED
+        self.velocity *= 0.8
 
     def behave(self, robots):
         separation = self.separate(robots)
@@ -56,11 +63,6 @@ class Robot:
         self.acceleration += separation
         self.acceleration += alignment
         self.acceleration += cohesion
-
-        self.velocity += self.acceleration
-        if self.velocity.length() > ROBOT_MAX_SPEED: self.velocity.scale_to_length(ROBOT_MAX_SPEED)
-        self.position += self.velocity
-        self.acceleration *= 0
 
     def separate(self, robots):
         steer = pg.math.Vector2()
@@ -91,7 +93,8 @@ class Robot:
                 count += 1
         if count > 0:
             avg_velocity /= count
-            avg_velocity.scale_to_length(ROBOT_MAX_SPEED)
+            if avg_velocity.length() > 0.0001:
+                avg_velocity.scale_to_length(ROBOT_MAX_SPEED)
             steer = avg_velocity - self.velocity
             if steer.length() > ROBOT_MAX_FORCE:
                 steer.scale_to_length(ROBOT_MAX_FORCE)
