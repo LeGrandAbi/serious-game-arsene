@@ -9,8 +9,7 @@ class Robot:
     def __init__(self, data):
         self.data = data
         self.position = pg.math.Vector2(random.uniform(350, 450), random.uniform(350, 450))
-        angle = random.uniform(0, 2 * math.pi)
-        self.velocity = pg.math.Vector2(math.cos(angle), math.sin(angle)) * ROBOT_MAX_SPEED / 2
+        self.velocity = pg.math.Vector2()
         self.acceleration = pg.math.Vector2()
         self.body_animation_timer = 0
         self.controlled = False
