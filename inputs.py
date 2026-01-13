@@ -6,12 +6,12 @@ class Inputs:
 		self.keys = {}
 
 		# self.keys[ACTION] = KeyInput(KeyA, KeyB, keyC, ...)
-		self.keys["left"] = KeyInput(pg.K_LEFT)
-		self.keys["right"] = KeyInput(pg.K_RIGHT)
-		self.keys["up"] = KeyInput(pg.K_UP)
-		self.keys["down"] = KeyInput(pg.K_DOWN)
+		self.keys["left"] = KeyInput(pg.K_LEFT, pg.K_a, pg.K_q)
+		self.keys["right"] = KeyInput(pg.K_RIGHT, pg.K_d)
+		self.keys["up"] = KeyInput(pg.K_UP, pg.K_z, pg.K_w)
+		self.keys["down"] = KeyInput(pg.K_DOWN, pg.K_s)
 		self.keys["primary"] = KeyInput(pg.K_SPACE)
-		self.keys["secondary"] = KeyInput(pg.K_e)
+		self.keys["secondary"] = KeyInput(pg.K_LCTRL)
 
 	def update(self):
 		# updates the value of each input according to their assignated keys
@@ -39,3 +39,7 @@ class KeyInput:
 		self.keydown = False	# status of the action: the button was just pressed at this tick
 		self.pressed = False	# status: the button is being pressed
 		self.keyup = False		# status of the action: the button was just released at this tick
+
+
+if __name__ == "__main__":
+    import main

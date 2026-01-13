@@ -46,3 +46,6 @@ class Tile:
 
 	def collide(self, robot):
 		return self.rect.collidepoint(robot.position)
+
+if __name__ == "__main__":
+    import main
