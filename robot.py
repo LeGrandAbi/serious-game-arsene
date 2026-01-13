@@ -16,7 +16,6 @@ class Robot:
 
     def get_image(self):
         texture = pg.Surface((64,64), pg.SRCALPHA)
-        print(int(self.body_animation_timer))
         texture.blit(self.data.texture_robot_body_walk_cycle[int(self.body_animation_timer)], (0,32))
         self.body_animation_timer += (self.velocity.length())/ROBOT_BODY_ANIMATION_SCALAR
         if self.body_animation_timer >= 4:

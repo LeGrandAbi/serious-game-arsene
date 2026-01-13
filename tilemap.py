@@ -7,14 +7,20 @@ class TileMap:
 		self.width = width
 		self.height = height
 		self.tiles = [[Tile(i, j, data) for i in range(self.width)] for j in range(self.height)]
-		self.current_level = []
 
-	def set_level(self, danger_coords):
-		self.current_level = danger_coords
+	def set_dangers(self, coords):
+		self.clear_level()
 		for y in range(self.height):
 			for x in range(self.width):
-				if (x, y) in danger_coords:
+				if (x, y) in coords:
 					self.tiles[y][x].dangerous = True
+
+	def set_warnings(self, coords):
+		self.clear_level()
+		for y in range(self.height):
+			for x in range(self.width):
+				if (x, y) in coords:
+					self.tiles[y][x].warning = True
 
 	def get_image(self, x, y):
 		return self.tiles[y][x].get_image()
@@ -23,6 +29,7 @@ class TileMap:
 		for y in range(self.height):
 			for x in range(self.width):
 				self.tiles[y][x].dangerous = False
+				self.tiles[y][x].warning = False
 
 	def collide_with_danger(self, robot):
 		for y in range(self.height):
@@ -36,12 +43,17 @@ class Tile:
 	def __init__(self, x, y, data):
 		self.data = data
 		self.pos = (x, y)
-		self.dangerous = False
 		self.rect = pg.Rect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE)
+		self.dangerous = False
+		self.warning = False
 
 	def get_image(self):
 		if self.dangerous:
 			return self.data.texture_tile_danger
+		elif self.warning:
+			texture = self.data.texture_tile.copy()
+			texture.blit(self.data.texture_tile_warning, (0,0))
+			return texture
 		else:
 			return self.data.texture_tile
 
