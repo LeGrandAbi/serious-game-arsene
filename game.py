@@ -1,5 +1,5 @@
 import pygame as pg
-import random as rand
+from random import randint
 
 from settings import *
 from screen import *
@@ -11,7 +11,7 @@ class Game(Screen):
 		super().__init__(display, clock, inputs, data)
 
 		self.tilemap = TileMap(TILEMAP_WIDTH, TILEMAP_HEIGHT, self.data)
-		self.tilemap.set_dangerous(1,1)
+		self.tilemap.set_level(self.data.levels["easy"][0])
 
 		self.robots = [Robot(self.data) for _ in range(NB_ROBOTS)]
 		self.controlled_robot = self.robots[0]
@@ -43,9 +43,9 @@ class Game(Screen):
 				self.robots.remove(robot)
 
 	def switch_robot_control(self):
-		new_controlled_robot = self.robots[rand.randint(0, len(self.robots)-1)]
+		new_controlled_robot = self.robots[randint(0, len(self.robots)-1)]
 		while (new_controlled_robot == self.controlled_robot) and (len(self.robots) > 1):
-			new_controlled_robot = self.robots[rand.randint(0, len(self.robots)-1)]
+			new_controlled_robot = self.robots[randint(0, len(self.robots)-1)]
 		self.controlled_robot.controlled = False
 		self.controlled_robot = new_controlled_robot
 		self.controlled_robot.controlled = True

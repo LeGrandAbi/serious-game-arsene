@@ -7,16 +7,19 @@ class TileMap:
 		self.height = height
 		self.tiles = [[Tile(i, j, data) for i in range(self.width)] for j in range(self.height)]
 
+		self.current_level = []
+
+	def set_level(self, danger_coords):
+		self.current_level = danger_coords
+		for y in range(self.height):
+			for x in range(self.width):
+				if (x, y) in danger_coords:
+					self.tiles[y][x].dangerous = True
+
 	def get_image(self, x, y):
 		return self.tiles[y][x].get_image()
 
-	def set_dangerous(self, x, y):
-		self.tiles[y][x].dangerous = True
-
-	def set_safe(self, x, y):
-		self.tiles[y][x].dangerous = False
-
-	def set_all_safe(self):
+	def clear_level(self):
 		for y in range(self.height):
 			for x in range(self.width):
 				self.tiles[y][x].dangerous = False
