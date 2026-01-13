@@ -5,19 +5,18 @@ class Data:
 	def __init__(self):
 		self.texture_tile = pg.image.load("./data/textures/tile.png").convert()
 		self.texture_tile_danger = pg.image.load("./data/textures/tile_danger.png").convert()
-		self.texture_robot = pg.image.load("./data/textures/robot.png").convert_alpha()
+		self.texture_robot_head_frame = pg.image.load("./data/textures/robot_head_frame.png").convert_alpha()
+		self.texture_robot_body_stand = pg.image.load("./data/textures/robot_body.png").convert_alpha()
+		self.texture_robot_body_walk_cycle = [pg.image.load(f"./data/textures/robot_body_walk_{i+1}.png").convert_alpha() for i in range(4)]
+		self.texture_robot_headscreen_nosignal = pg.image.load("./data/textures/robot_headscreen_nosignal.png").convert()
 
-		self.levels = {
-			"easy" : [
+		self.easy_levels = [
 				[(0,0), (5,5), (0,5), (5,0)],
 				[(2,2), (2,3), (3,2), (3,3)],
-			],
-			"normal" : [
-			],
-			"hard" : [
-			],
-		}
+			]
+		self.normal_levels = []
+		self.hard_levels = []
 
 
 if __name__ == "__main__":
-    import main
+    import main 

@@ -12,10 +12,18 @@ class Robot:
         angle = random.uniform(0, 2 * math.pi)
         self.velocity = pg.math.Vector2(math.cos(angle), math.sin(angle)) * ROBOT_MAX_SPEED / 2
         self.acceleration = pg.math.Vector2()
+        self.body_animation_timer = 0
         self.controlled = False
 
     def get_image(self):
-        texture = self.data.texture_robot
+        texture = pg.Surface((64,64), pg.SRCALPHA)
+        print(int(self.body_animation_timer))
+        texture.blit(self.data.texture_robot_body_walk_cycle[int(self.body_animation_timer)], (0,32))
+        self.body_animation_timer += (self.velocity.length())/ROBOT_BODY_ANIMATION_SCALAR
+        if self.body_animation_timer >= 4:
+            self.body_animation_timer = 0
+        texture.blit(self.data.texture_robot_headscreen_nosignal, (13,3))
+        texture.blit(self.data.texture_robot_head_frame, (0,-13))
         if self.velocity.x < 0:
             texture =  pg.transform.flip(texture, True, False)
         return texture
