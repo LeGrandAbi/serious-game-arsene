@@ -98,7 +98,7 @@ class Data:
 
 	# EASY
 		#corners
-		self.normal_levels.append([(0,0), (5,5), (0,5), (5,0)])
+		self.easy_levels.append([(0,0), (5,5), (0,5), (5,0)])
 
 if __name__ == "__main__":
     import main 
