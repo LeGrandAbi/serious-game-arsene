@@ -14,6 +14,8 @@ class Robot:
         self.acceleration = pg.math.Vector2()
         self.body_animation_timer = 0
 
+        self.life = ROBOT_MAX_LIFE
+
         self.controlled = False
         self.is_next = False
 
@@ -42,8 +44,14 @@ class Robot:
     def update(self, inputs, robots, controlled_robot):
         if self.controlled:
             self.control(inputs)
+            if inputs.keys["secondary"].pressed:
+                self.life -= random.randint(0, ROBOT_MAX_DAMAGE)
         else:
             self.behave(inputs, robots, controlled_robot)
+            self.life += random.randint(0, ROBOT_MAX_REGEN)
+            if self.life > ROBOT_MAX_LIFE:
+                self.life = ROBOT_MAX_LIFE
+
         self.velocity += self.acceleration
         if self.velocity.length() > ROBOT_MAX_SPEED: self.velocity.scale_to_length(ROBOT_MAX_SPEED)
         self.position += self.velocity
