@@ -52,7 +52,7 @@ class Game(Screen):
 
 
 	def exit_condition(self):
-		return self.inputs.keys["secondary"].keydown
+		return len(self.robots) < 5
 
 
 if __name__ == "__main__":
