@@ -1,5 +1,6 @@
 import pygame as pg
 from random import randint
+import math
 
 from settings import *
 from screen import *
@@ -84,7 +85,9 @@ class Game(Screen):
 
 		for robot in sorted(self.robots, key = lambda robot: robot.position.y):
 			texture = robot.get_image()
-			self.display.blit(texture, texture.get_rect(center=robot.position))
+			offset_scalar = 3 - int(math.sqrt(robot.life / ROBOT_MAX_LIFE) * 3)
+			offset = pg.Vector2(randint(-offset_scalar, offset_scalar), randint(-offset_scalar, offset_scalar))
+			self.display.blit(texture, texture.get_rect(center=robot.position + offset))
 
 	def exit_condition(self):
 		return len(self.robots) < 3

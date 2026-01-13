@@ -28,11 +28,15 @@ class Robot:
             self.body_animation_timer = 0
 
         if self.controlled:
-            screen_texture = self.data.texture_robot_screen_signal
+            screen_texture = self.data.texture_robot_screen_signal.copy()
         elif self.is_next:
-            screen_texture = self.data.texture_robot_screen_next
+            screen_texture = self.data.texture_robot_screen_next.copy()
         else:
-            screen_texture = self.data.texture_robot_screen_nosignal
+            screen_texture = self.data.texture_robot_screen_nosignal.copy()
+        if self.life != ROBOT_MAX_LIFE:
+            neige_texture = self.data.texture_screen_neige[random.randint(0, len(self.data.texture_screen_neige)-1)].copy()
+            neige_texture.set_alpha(int(255-255*self.life/ROBOT_MAX_LIFE))
+            screen_texture.blit(neige_texture, (0,0))
         texture.blit(screen_texture, (13,3))
 
         texture.blit(self.data.texture_robot_head_frame, (0,-13))
