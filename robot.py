@@ -15,6 +15,7 @@ class Robot:
         self.body_animation_timer = 0
 
         self.controlled = False
+        self.is_next = False
 
     def get_image(self):
         texture = pg.Surface((64,64), pg.SRCALPHA)
@@ -26,6 +27,8 @@ class Robot:
 
         if self.controlled:
             screen_texture = self.data.texture_robot_screen_signal
+        elif self.is_next:
+            screen_texture = self.data.texture_robot_screen_next
         else:
             screen_texture = self.data.texture_robot_screen_nosignal
         texture.blit(screen_texture, (13,3))
