@@ -46,11 +46,14 @@ class Robot:
             self.control(inputs)
             if inputs.keys["secondary"].pressed:
                 self.life -= random.randint(0, ROBOT_MAX_DAMAGE)
+            else:
+                self.life += 1
         else:
             self.behave(inputs, robots, controlled_robot)
             self.life += random.randint(0, ROBOT_MAX_REGEN)
-            if self.life > ROBOT_MAX_LIFE:
-                self.life = ROBOT_MAX_LIFE
+
+        if self.life > ROBOT_MAX_LIFE:
+            self.life = ROBOT_MAX_LIFE
 
         self.velocity += self.acceleration
         if self.velocity.length() > ROBOT_MAX_SPEED: self.velocity.scale_to_length(ROBOT_MAX_SPEED)
