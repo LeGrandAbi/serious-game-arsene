@@ -94,7 +94,7 @@ class Robot:
                 count += 1
         if count > 0:
             steer /= count
-        if steer.length() > 0.0001:
+        if steer.length() > EPS:
             steer.scale_to_length(ROBOT_MAX_SPEED)
             steer -= self.velocity
             if steer.length() > ROBOT_MAX_FORCE:
@@ -111,7 +111,7 @@ class Robot:
                 count += 1
         if count > 0:
             avg_velocity /= count
-            if avg_velocity.length() > 0.0001:
+            if avg_velocity.length() > EPS:
                 avg_velocity.scale_to_length(ROBOT_MAX_SPEED)
             steer = avg_velocity - self.velocity
             if steer.length() > ROBOT_MAX_FORCE:
@@ -142,10 +142,14 @@ class Robot:
     def follow(self, inputs, controlled_robot):
         follow = pg.Vector2()
         if inputs.keys["secondary"].pressed:
-            pass
+            diff = controlled_robot.position - self.position
+            dist = diff.length()
+            if dist > ROBOT_NOFOLLOW_DIST:
+                diff.scale_to_length(ROBOT_FOLLOW_STRENGTH * (1/math.sqrt(dist)))
+                follow = diff
+            elif self.velocity.length() > EPS:
+                self.velocity.scale_to_length(0.9)
 
-            # follow behavior
-            
         return follow
 
 if __name__ == "__main__":
