@@ -8,20 +8,30 @@ from settings import *
 class Robot:
     def __init__(self, data):
         self.data = data
+
         self.position = pg.math.Vector2(random.uniform(350, 450), random.uniform(350, 450))
         self.velocity = pg.math.Vector2()
         self.acceleration = pg.math.Vector2()
         self.body_animation_timer = 0
+
         self.controlled = False
 
     def get_image(self):
         texture = pg.Surface((64,64), pg.SRCALPHA)
+
         texture.blit(self.data.texture_robot_body_walk_cycle[int(self.body_animation_timer)], (0,32))
         self.body_animation_timer += (self.velocity.length())/ROBOT_BODY_ANIMATION_SCALAR
         if self.body_animation_timer >= 4:
             self.body_animation_timer = 0
-        texture.blit(self.data.texture_robot_headscreen_nosignal, (13,3))
+
+        if self.controlled:
+            screen_texture = self.data.texture_robot_screen_signal
+        else:
+            screen_texture = self.data.texture_robot_screen_nosignal
+        texture.blit(screen_texture, (13,3))
+
         texture.blit(self.data.texture_robot_head_frame, (0,-13))
+
         if self.velocity.x < 0:
             texture =  pg.transform.flip(texture, True, False)
         return texture

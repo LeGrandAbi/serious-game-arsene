@@ -10,7 +10,9 @@ from tilemap import TileMap
 class Game(Screen):
 	def __init__(self, display, clock, inputs, data):
 		super().__init__(display, clock, inputs, data)
+
 		self.tilemap = TileMap(TILEMAP_WIDTH, TILEMAP_HEIGHT, self.data)
+		
 		self.robots = [Robot(self.data) for _ in range(NB_ROBOTS)]
 		self.controlled_robot = self.robots[0]
 		self.switch_robot_control()
